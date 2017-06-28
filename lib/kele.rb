@@ -6,8 +6,7 @@ class Kele
   attr_reader :token, :response
 
   def initialize(email, password)
-      @base_uri = "https://www.bloc.io/api/v1"
-      self.class.base_uri @base_uri
+      self.class.base_uri("https://www.bloc.io/api/v1")
       body = {
         "email": email,
         "password": password
@@ -21,22 +20,14 @@ class Kele
       @token = @response.parsed_response["auth_token"]
     end
 
-    def get_me
-      res = self.class.get("#{@base_uri}/users/me", headers: {"authorization" => token})
+  def get_me
+      response = self.class.get("/users/me", headers: {"authorization" => token})
       @current_user = JSON.parse(response.body)
     end
 
-#mentor_id 523127
+    #mentor_id 523127
   def get_mentor_availability(mentor_id)
-    res = self.class.get("#{@base_uri}/student_availability", headers: {"authorization" => token})
-    #res = self.class.get("#{@base_uri}/mentors/#mentor_id}/student_availability"), headers: { "authorization" => token})
-     @current_user = JSON.parse(response.body)
-
+   response = self.class.get("/mentors/#{mentor_id}/student_availability", headers: {"authorization" => token})
+    @current_user = JSON.parse(response.body)
+    end
   end
-
-  private
-
-  def base_uri(endpoint)
-    "https://www.bloc.io/api/v1/#{endpoint}"
-  end
-end
