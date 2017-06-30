@@ -1,7 +1,7 @@
 require 'httparty'
 require 'json'
 require './lib/roadmap.rb'
-require 'roadmap'
+#require 'roadmap'
 
 class Kele
   include HTTParty
@@ -43,6 +43,12 @@ class Kele
 
   def create_message(sender_email, recipient_id, subject, stripped_text)
     response = self.class.post("/messages/", headers: { "authorization" => token }, body: {sender: sender_email, recipient_id: recipient_id, stripped_text: stripped_text, subject: subject })
+    JSON.parse(response.body)
+  end
+
+  def create_submission(checkpoint_id, assignment_branch, assignment_commit_link, enrollment_id)#comment,
+    # 2162
+    response = self.class.post("/checkpoint_submissions/#{checkpoint_id}", headers: { "authorization" => token }, body: { checkpoint_id: checkpoint_id, assignment_branch: assignment_branch, assignment_commit_link: assignment_commit_link, comment: comment, enrollment_id: enrollment_id })
     JSON.parse(response.body)
   end
 end

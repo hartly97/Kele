@@ -3,7 +3,7 @@ require 'json'
 
 module Roadmap
   include HTTParty
-  
+
   def get_roadmap(roadmap_id)
     response = self.class.get("/roadmaps/#{roadmap_id}", headers: { "authorization" => token})
     @roadmap = JSON.parse(response.body)
@@ -13,4 +13,6 @@ module Roadmap
     response = self.class.get("/checkpoints/#{checkpoint_id}", headers: { "authorization" => token})
     @checkpoint = JSON.parse(response.body)
   end
+
+  
 end
