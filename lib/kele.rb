@@ -1,6 +1,7 @@
 require 'httparty'
 require 'json'
 require './lib/roadmap.rb'
+require 'roadmap'
 
 class Kele
   include HTTParty
@@ -30,7 +31,18 @@ class Kele
     #mentor_id 523127
   def get_mentor_availability(mentor_id)
     response = self.class.get("/mentors/#{mentor_id}/student_availability", headers: {"authorization" => token})
-    #@current_user = JSON.parse(response.body)
-    @get_mentor_availability = JSON.parse(response.body)
+    @current_user = JSON.parse(response.body)
+    #@get_mentor_availability = JSON.parse(response.body)
+  end
+
+  def get_messages(page)
+    response = self.class.get("/message_threads", headers: { "authorization" => token })
+    #@messages = JSON.parse(response.body)
+    @current_user = JSON.parse(response.body)
+  end
+
+  def create_message(sender_email, recipient_id, subject, stripped_text)
+    response = self.class.post("/messages/", headers: { "authorization" => token }, body: {sender: sender_email, recipient_id: recipient_id, stripped_text: stripped_text, subject: subject })
+    JSON.parse(response.body)
   end
 end

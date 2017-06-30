@@ -1,4 +1,9 @@
+require 'httparty'
+require 'json'
+
 module Roadmap
+  include HTTParty
+  
   def get_roadmap(roadmap_id)
     response = self.class.get("/roadmaps/#{roadmap_id}", headers: { "authorization" => token})
     @roadmap = JSON.parse(response.body)
